@@ -23,7 +23,11 @@ using both **Civil Engineering forecasting methods** and **Machine Learning mode
 )
 
 # LOAD DATA
-data = pd.read_csv("kolkata_population.csv")
+@st.cache_data
+def load_data():
+    return pd.read_csv("kolkata_population.csv")
+
+data = load_data()
 
 data.columns = data.columns.str.strip()
 
@@ -45,16 +49,21 @@ avg_percent = np.mean(percent_growth)
 X = years.reshape(-1,1)
 y = population
 
-# Linear Regression
-linear_model = LinearRegression()
-linear_model.fit(X,y)
+@st.cache_resource
+def train_models(X, y):
 
-# Polynomial Regression
-poly = PolynomialFeatures(degree=2)
-X_poly = poly.fit_transform(X)
+    linear_model = LinearRegression()
+    linear_model.fit(X,y)
 
-poly_model = LinearRegression()
-poly_model.fit(X_poly,y)
+    poly = PolynomialFeatures(degree=2)
+    X_poly = poly.fit_transform(X)
+
+    poly_model = LinearRegression()
+    poly_model.fit(X_poly,y)
+
+    return linear_model, poly_model, poly
+
+linear_model, poly_model, poly = train_models(X,y)
 
 # SIDEBAR
 
