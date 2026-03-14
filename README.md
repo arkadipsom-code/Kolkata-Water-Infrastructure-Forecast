@@ -215,7 +215,7 @@ Infrastructure Capacity Assessment
 Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/repository-name.git
+git clone https://github.com/arkadipsom-code/Kolkata-Water-Infrastructure-Forecast.git
 ```
 
 Install dependencies:
