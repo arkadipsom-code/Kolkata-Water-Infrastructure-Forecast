@@ -417,40 +417,69 @@ st.plotly_chart(fig, use_container_width=True)
 st.divider()
 
 
-# Infra capacity comaprison
-st.subheader("Infrastructure Capacity Comparison")
+# Infra capacity comparison
+st.subheader(f"Infrastructure Capacity Comparison — Forecast Year: {target_year}")
 
 load_existing = (ww_mld / existing_capacity) * 100
 load_future = (ww_mld / future_capacity) * 100
 
-col1, col2 = st.columns(2)
+gap_existing = ww_mld - existing_capacity   # MLD over/under
+gap_future = ww_mld - future_capacity       # MLD over/under
+
+col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.metric("Current System Load (%)", round(load_existing,2))
+    st.metric("Forecast Year", target_year)
 
 with col2:
-    st.metric("Future System Load (%)", round(load_future,2))
+    st.metric(
+        "Current System Load (%)",
+        round(load_existing, 2),
+        delta=f"{round(gap_existing, 2)} MLD {'surplus' if gap_existing < 0 else 'deficit'}",
+        delta_color="inverse"
+    )
 
+with col3:
+    st.metric(
+        "Future System Load (%)",
+        round(load_future, 2),
+        delta=f"{round(gap_future, 2)} MLD {'surplus' if gap_future < 0 else 'deficit'}",
+        delta_color="inverse"
+    )
 
-# Infrastr warning
-st.subheader(" Wastewater Infrastructure Status")
+# Extra capacity gap row
+col4, col5 = st.columns(2)
+
+with col4:
+    st.metric(
+        "Current Capacity Gap (MLD)",
+        round(gap_existing, 2),
+        help="Positive = deficit (overloaded). Negative = surplus."
+    )
+
+with col5:
+    st.metric(
+        "Future Capacity Gap (MLD)",
+        round(gap_future, 2),
+        help="Positive = deficit (overloaded). Negative = surplus."
+    )
+
+# Infrastructure status
+st.subheader(f"Wastewater Infrastructure Status in {target_year}")
+
 if load_existing > 100:
-    st.error("⚠ Current infrastructure overloaded")
-
+    st.error(f"⚠ Current infrastructure overloaded — {round(gap_existing, 2)} MLD deficit")
 elif load_existing > 80:
-    st.warning("⚠ Current infrastructure nearing capacity")
-
+    st.warning(f"⚠ Current infrastructure nearing capacity — {round(gap_existing, 2)} MLD headroom remaining")
 else:
-    st.success("✓ Current infrastructure sufficient")
+    st.success(f"✓ Current infrastructure sufficient — {round(abs(gap_existing), 2)} MLD surplus")
 
 if load_future > 100:
-    st.error("⚠ Even with new plants, capacity will be insufficient")
-
+    st.error(f"⚠ Even with new plants, capacity will be insufficient — {round(gap_future, 2)} MLD deficit")
 elif load_future > 80:
-    st.warning("⚠ Future infrastructure may face pressure")
-
+    st.warning(f"⚠ Future infrastructure may face pressure — {round(gap_future, 2)} MLD headroom remaining")
 else:
-    st.success("✓ New treatment plants will reduce system load")
+    st.success(f"✓ New treatment plants will reduce system load — {round(abs(gap_future), 2)} MLD surplus")
 
 st.divider()
 
