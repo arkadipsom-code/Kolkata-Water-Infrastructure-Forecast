@@ -489,6 +489,28 @@ with st.expander("Engineering Assumptions"):
     st.write("BOD concentration = 250 mg/L")
     st.write("COD concentration = 500 mg/L")
 
+with st.expander("List of Capacity of the Plants (in MLD)"):
+    st.caption("Existing Plants:")
+    st.write("Garden Reach: 57")
+    st.write("Keorapukur: 45")
+    st.write("Bangur: 45")
+    st.write("Dhapa: 80")
+    st.write("Jorabagan: 45")
+    st.write("Watgunge: 35")
+    st.write("New Town (AA-IIC): 31")
+    st.write("New Town (AA-IIB): 14")
+    st.write("South Suburban East: 30")
+    st.write("Bagjola: 18")
+
+    st.caption("Future Plants:")
+    st.write("Garden Reach Extension: 113.6")
+    st.write("Palta Extension: 90.9")
+    st.write("Hossainpur STP: 41.0")
+    st.write("Joka (Bank Plot): 40.0")
+    st.write("Joka (WBSETCL Campus): 45.0")
+    st.write("Rania STP: 23.0")
+
+
 st.divider()
 
 st.subheader("Urban Water System Model")
